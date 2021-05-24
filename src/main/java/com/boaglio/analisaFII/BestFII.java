@@ -24,7 +24,8 @@ public class BestFII {
         List<FundoImobiliario> listAtivos = fiiList.stream().limit(Main.LISTA_DE_FUNDOS).collect(Collectors.toList());
         List<Rank> rankAtivos = listAtivos.stream().map(e -> new Rank(e.getCodigo(), fiiList.indexOf(e)))
                 .collect(Collectors.toList());
-
+        listAtivos.forEach(System.out::println);
+        
         // top for DividendYield
         fiiList.sort(Main.maiorDividendYield);
         List<FundoImobiliario> listDividendYield = fiiList.stream().limit(Main.LISTA_DE_FUNDOS)
@@ -46,18 +47,22 @@ public class BestFII {
         List<Rank> rankDividendYield12m = listDividendYield12m.stream()
                 .map(e -> new Rank(e.getCodigo(), fiiList.indexOf(e))).collect(Collectors.toList());
 
-        // aplica rank
-
+        // aplica rank patrimonio liquido
         rankAtivos.stream().forEach(r -> {
             int rankAtual = topRank.getOrDefault(r.getName(), 0);
             topRank.put(r.getName(), rankAtual + r.getValue() * PESO_2);
         });
 
-        rankList = topRank.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+        // aplica rank 
+        rankDividendYield.stream().forEach(r -> {
+            int rankAtual = topRank.getOrDefault(r.getName(), 0);
+            topRank.put(r.getName(), rankAtual + r.getValue() * PESO_1);
+        });
+        
+        // orderna os valores
+        rankList = topRank.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue())
                 .map(x -> new Rank(x.getKey(), x.getValue())).collect(Collectors.toList());
-
-        rankList.sort(maiorRank);
-
+ 
         return rankList;
 
     }
