@@ -66,6 +66,17 @@ public class FundoImobiliario {
         this.quantidadeAtivos = quantidadeAtivos;
     }
 
+    public FundoImobiliario(String codigo, String setor, Double dividendYield, Double dividendYield12Macumulado,
+            Double dividendYield12Mmedia, Double patrimonioLiquido) {
+        super();
+        this.codigo = codigo;
+        this.setor = setor;
+        this.dividendYield = dividendYield;
+        this.dividendYield12Macumulado = dividendYield12Macumulado;
+        this.dividendYield12Mmedia = dividendYield12Mmedia;
+        this.patrimonioLiquido = patrimonioLiquido;
+    }
+
     public String getCodigo() {
         return codigo;
     }
@@ -272,6 +283,66 @@ public class FundoImobiliario {
 
     public void setQuantidadeAtivos(Double quantidadeAtivos) {
         this.quantidadeAtivos = quantidadeAtivos;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((dividendYield12Mmedia == null) ? 0 : dividendYield12Mmedia.hashCode());
+        result = prime * result + ((dividendYield3Mmedia == null) ? 0 : dividendYield3Mmedia.hashCode());
+        result = prime * result + ((dividendYield6Mmedia == null) ? 0 : dividendYield6Mmedia.hashCode());
+        result = prime * result + ((patrimonioLiquido == null) ? 0 : patrimonioLiquido.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        FundoImobiliario other = (FundoImobiliario) obj;
+        if (dividendYield12Mmedia == null) {
+            if (other.dividendYield12Mmedia != null)
+                return false;
+        } else if (!dividendYield12Mmedia.equals(other.dividendYield12Mmedia))
+            return false;
+        if (dividendYield3Mmedia == null) {
+            if (other.dividendYield3Mmedia != null)
+                return false;
+        } else if (!dividendYield3Mmedia.equals(other.dividendYield3Mmedia))
+            return false;
+        if (dividendYield6Mmedia == null) {
+            if (other.dividendYield6Mmedia != null)
+                return false;
+        } else if (!dividendYield6Mmedia.equals(other.dividendYield6Mmedia))
+            return false;
+        if (patrimonioLiquido == null) {
+            if (other.patrimonioLiquido != null)
+                return false;
+        } else if (!patrimonioLiquido.equals(other.patrimonioLiquido))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "FundoImobiliario [codigo=" + codigo + ", setor=" + setor + ", precoAtual=" + precoAtual
+                + ", liquidezDiaria=" + liquidezDiaria + ", dividendo=" + dividendo + ", dividendYield=" + dividendYield
+                + ", dividendYield3Macumulado=" + dividendYield3Macumulado + ", dividendYield6Macumulado="
+                + dividendYield6Macumulado + ", dividendYield12Macumulado=" + dividendYield12Macumulado
+                + ", dividendYield3Mmedia=" + dividendYield3Mmedia + ", dividendYield6Mmedia=" + dividendYield6Mmedia
+                + ", dividendYield12Mmedia=" + dividendYield12Mmedia + ", dividendYieldAno=" + dividendYieldAno
+                + ", variacaoPreco=" + variacaoPreco + ", rentabilidadePeriodo=" + rentabilidadePeriodo
+                + ", rentabilidadeAcumulada=" + rentabilidadeAcumulada + ", patrimonioLiquido=" + patrimonioLiquido
+                + ", VPA=" + VPA + ", PVPA=" + PVPA + ", dividendYieldPatrimonial=" + dividendYieldPatrimonial
+                + ", variacaoPatrimonial=" + variacaoPatrimonial + ", rentabilidadePatrimonialNoPeríodo="
+                + rentabilidadePatrimonialNoPeríodo + ", rentabilidadePatrimonialAcumulada="
+                + rentabilidadePatrimonialAcumulada + ", vacanciaFisica=" + vacanciaFisica + ", vacanciaFinanceira="
+                + vacanciaFinanceira + ", quantidadeAtivos=" + quantidadeAtivos + "]";
     }
 
 }

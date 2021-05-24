@@ -20,7 +20,7 @@ public class Main {
 
     private static final Locale LOCALE_BR = new Locale("pt", "BR");
 
-    private static final int LISTA_DE_FUNDOS = 10;
+    public static final int LISTA_DE_FUNDOS = 10;
 
     private static final String SETOR_TITULOS_E_VAL_MOB = "Títulos e Val. Mob.";
 
@@ -43,13 +43,13 @@ public class Main {
     public static int erros = 0;
 
     // criterios
-    final static Comparator<FundoImobiliario> maiorPatrimonioLiquido         = Comparator
+    public final static Comparator<FundoImobiliario> maiorPatrimonioLiquido         = Comparator
             .comparing(FundoImobiliario::getPatrimonioLiquido).reversed();
-    final static Comparator<FundoImobiliario> maiorDividendYield             = Comparator
+    public final static Comparator<FundoImobiliario> maiorDividendYield             = Comparator
             .comparing(FundoImobiliario::getDividendYield).reversed();
-    final static Comparator<FundoImobiliario> maiorDividendYield12Macumulado = Comparator
+    public final static Comparator<FundoImobiliario> maiorDividendYield12Macumulado = Comparator
             .comparing(FundoImobiliario::getDividendYield12Macumulado).reversed();
-    final static Comparator<FundoImobiliario> maiorDividendYield12Mmedia     = Comparator
+    public final static Comparator<FundoImobiliario> maiorDividendYield12Mmedia     = Comparator
             .comparing(FundoImobiliario::getDividendYield12Mmedia).reversed();
 
     public static void main(String[] args) throws IOException {

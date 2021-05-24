@@ -12,7 +12,7 @@
 	<scm>
 		<url>https://github.com/boaglio/analisaFII</url>
 	</scm>
- 
+
 	<contributors>
 		<contributor>
 			<name>Fernando Boaglio</name>
@@ -44,6 +44,12 @@
 			<version>${junit.jupiter.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -59,15 +65,15 @@
 					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
-	        <plugin>
-	            <groupId>org.codehaus.mojo</groupId>
-	            <artifactId>exec-maven-plugin</artifactId>
-	            <version>3.0.0</version>
-	            <configuration>
-	                <mainClass>com.boaglio.analisaFII.Main</mainClass>
-	            </configuration>
-	        </plugin>
-			 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<mainClass>com.boaglio.analisaFII.Main</mainClass>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
