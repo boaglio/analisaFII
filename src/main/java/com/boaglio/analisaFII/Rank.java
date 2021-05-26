@@ -2,8 +2,8 @@ package com.boaglio.analisaFII;
 
 public class Rank {
 
-    private String  name;
-    private Integer value;
+    private String name;
+    private Double value;
 
     public String getName() {
         return name;
@@ -13,18 +13,24 @@ public class Rank {
         this.name = name;
     }
 
-    public Integer getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
+    public Rank(String name, Double value) {
+        super();
+        this.name = name;
         this.value = value;
     }
 
     public Rank(String name, Integer value) {
         super();
         this.name = name;
-        this.value = value;
+        this.value = (double) value;
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
@@ -67,6 +68,8 @@ public class Main {
             }
             contador++;
         }
+        Map<String, FundoImobiliario> mapFundos = listaDeFundos.stream()
+                .collect(Collectors.toMap(FundoImobiliario::getCodigo, Function.identity()));
 
         plotTableLine();
         log(" ----------- Análise dos Fundos Imobiliários -----------");
@@ -94,6 +97,18 @@ public class Main {
         showDetailsFI(SETOR_SHOPPINGS, fundosShopping);
         showDetailsFI(SETOR_LAJES_CORPORATIVAS, fundosLajesCorporativas);
         showDetailsFI(SETOR_TITULOS_E_VAL_MOB, fundosTitulosValMob);
+
+        log("*** Rankings por setor ***");
+
+        List<Rank> rankFundosLogistica = BestFII.getList(fundosLogistica);
+        List<Rank> rankFundosShopping = BestFII.getList(fundosShopping);
+        List<Rank> rankFundosLajesCorporativas = BestFII.getList(fundosLajesCorporativas);
+        List<Rank> rankFundosTitulosValMob = BestFII.getList(fundosTitulosValMob);
+
+        showRankFI(SETOR_LOGISTICA, rankFundosLogistica, mapFundos);
+        showRankFI(SETOR_SHOPPINGS, rankFundosShopping, mapFundos);
+        showRankFI(SETOR_LAJES_CORPORATIVAS, rankFundosLajesCorporativas, mapFundos);
+        showRankFI(SETOR_TITULOS_E_VAL_MOB, rankFundosTitulosValMob, mapFundos);
 
     }
 
@@ -130,6 +145,21 @@ public class Main {
                 .forEach(f -> log("%-10s %5.2f%% ", f.getCodigo(), f.getDividendYield12Mmedia()));
     }
 
+    private static void showRankFI(String setor, List<Rank> rank, Map<String, FundoImobiliario> mapFundos) {
+        log("*** " + setor + " - melhores FII ***");
+        plotTableLine();
+        log("*** Código|Pontos|  Preço   | Div.Yeld | DY12M m| DY12M a | Patrimônio líquido");
+        plotTableLineThin();
+        rank.stream().limit(LISTA_DE_FUNDOS).forEach(r -> {
+            FundoImobiliario fii = mapFundos.get(r.getName());
+            log("%-8s - %5.2f - R$ %7.2f - %5.2f%% - %5.2f%% - %5.2f%% - R$%15.2f ", r.getName(), r.getValue(),
+                    fii.getPrecoAtual(), fii.getDividendYield(), fii.getDividendYield12Mmedia(),
+                    fii.getDividendYield12Macumulado(), fii.getPatrimonioLiquido());
+        });
+
+        plotTableLine();
+    }
+
     private static void log(String msg) {
         System.out.println(msg);
         FileUtil.saveFile(filename, msg);
@@ -147,12 +177,23 @@ public class Main {
         FileUtil.saveFile(filename, msg);
     }
 
+    private static void log(String format, String codigo, Double valor1, Double valor2, Double valor3, Double valor4,
+            Double valor5, Double valor6) {
+        String msg = String.format(format, codigo, valor1, valor2, valor3, valor4, valor5, valor6);
+        System.out.println(msg);
+        FileUtil.saveFile(filename, msg);
+    }
+
     private static void plotTableLine() {
-        log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+        log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+    }
+
+    private static void plotTableLineThin() {
+        log("-----------------------------------------------------------------------------------------");
     }
 
     private static void plotLine() {
-        log("========================================================================");
+        log("=========================================================================================");
     }
 
 }

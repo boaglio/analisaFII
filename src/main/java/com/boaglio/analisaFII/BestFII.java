@@ -9,29 +9,30 @@ import java.util.stream.Collectors;
 
 public class BestFII {
 
-    private static final int PESO_1 = 1;
-    private static final int PESO_2 = 2;
+    private static final int PESO_POUCA_IMPORTANCIA = 3;
+    private static final int PESO_MEDIA_IMPORTANCIA = 2;
+    private static final int PESO_MUITA_IMPORTANCIA = 1;
 
     public final static Comparator<Rank> maiorRank = Comparator.comparing(Rank::getValue).reversed();
 
     public static List<Rank> getList(List<FundoImobiliario> fiiList) {
 
-        Map<String, Integer> topRank = new HashMap<String, Integer>();
+        Map<String, Double> topRank = new HashMap<String, Double>();
         List<Rank> rankList = new ArrayList<>();
 
         // top por ativos
         fiiList.sort(Main.maiorPatrimonioLiquido);
         List<FundoImobiliario> listAtivos = fiiList.stream().limit(Main.LISTA_DE_FUNDOS).collect(Collectors.toList());
-        List<Rank> rankAtivos = listAtivos.stream().map(e -> new Rank(e.getCodigo(), fiiList.indexOf(e)))
+        List<Rank> rankAtivos = listAtivos.stream().map(e -> new Rank(e.getCodigo(), fiiList.indexOf(e) + 1))
                 .collect(Collectors.toList());
         listAtivos.forEach(System.out::println);
-        
+
         // top for DividendYield
         fiiList.sort(Main.maiorDividendYield);
         List<FundoImobiliario> listDividendYield = fiiList.stream().limit(Main.LISTA_DE_FUNDOS)
                 .collect(Collectors.toList());
-        List<Rank> rankDividendYield = listDividendYield.stream().map(e -> new Rank(e.getCodigo(), fiiList.indexOf(e)))
-                .collect(Collectors.toList());
+        List<Rank> rankDividendYield = listDividendYield.stream()
+                .map(e -> new Rank(e.getCodigo(), fiiList.indexOf(e) + 1)).collect(Collectors.toList());
 
         // top for DividendYield 12 meses acumulado
         fiiList.sort(Main.maiorDividendYield12Macumulado);
@@ -49,20 +50,35 @@ public class BestFII {
 
         // aplica rank patrimonio liquido
         rankAtivos.stream().forEach(r -> {
-            int rankAtual = topRank.getOrDefault(r.getName(), 0);
-            topRank.put(r.getName(), rankAtual + r.getValue() * PESO_2);
+            double rankAtual = topRank.getOrDefault(r.getName(), 0.0);
+            topRank.put(r.getName(), rankAtual + r.getValue() / PESO_MUITA_IMPORTANCIA);
         });
 
-        // aplica rank 
-        rankDividendYield.stream().forEach(r -> {
-            int rankAtual = topRank.getOrDefault(r.getName(), 0);
-            topRank.put(r.getName(), rankAtual + r.getValue() * PESO_1);
+        // System.out.println("rank ativos:");
+        // rankAtivos.forEach(System.out::println);
+
+        // aplica rank Dividend Yield 12 meses media
+        rankDividendYield12m.stream().forEach(r -> {
+            double rankAtual = topRank.getOrDefault(r.getName(), 0.0);
+            topRank.put(r.getName(), rankAtual + r.getValue() / PESO_MEDIA_IMPORTANCIA);
         });
-        
+
+        // aplica rank Dividend Yield
+        rankDividendYield.stream().forEach(r -> {
+            double rankAtual = topRank.getOrDefault(r.getName(), 0.0);
+            topRank.put(r.getName(), rankAtual + r.getValue() / PESO_POUCA_IMPORTANCIA);
+        });
+
+        // aplica rank Dividend Yield 12 meses acumulado
+        rankDividendYield12a.stream().forEach(r -> {
+            double rankAtual = topRank.getOrDefault(r.getName(), 0.0);
+            topRank.put(r.getName(), rankAtual + r.getValue() / PESO_POUCA_IMPORTANCIA);
+        });
+
         // orderna os valores
-        rankList = topRank.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue())
+        rankList = topRank.entrySet().stream().sorted(Map.Entry.<String, Double>comparingByValue())
                 .map(x -> new Rank(x.getKey(), x.getValue())).collect(Collectors.toList());
- 
+
         return rankList;
 
     }
