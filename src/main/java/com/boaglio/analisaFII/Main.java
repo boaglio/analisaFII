@@ -68,6 +68,12 @@ public class Main {
             }
             contador++;
         }
+        
+        if (contador==0) {
+        	System.out.println("Site ["+URL_FUNDSEXPLORER+"] inacessível. Tente mais tarde... =( ");
+        	System.exit(0);
+        }
+        
         Map<String, FundoImobiliario> mapFundos = listaDeFundos.stream()
                 .collect(Collectors.toMap(FundoImobiliario::getCodigo, Function.identity()));
 
