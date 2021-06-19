@@ -68,12 +68,12 @@ public class Main {
             }
             contador++;
         }
-        
-        if (contador==0) {
-        	System.out.println("Site ["+URL_FUNDSEXPLORER+"] inacessível. Tente mais tarde... =( ");
-        	System.exit(0);
+
+        if (contador == 0) {
+            System.out.println("Site [" + URL_FUNDSEXPLORER + "] inacessível. Tente mais tarde... =( ");
+            System.exit(0);
         }
-        
+
         Map<String, FundoImobiliario> mapFundos = listaDeFundos.stream()
                 .collect(Collectors.toMap(FundoImobiliario::getCodigo, Function.identity()));
 
@@ -172,20 +172,20 @@ public class Main {
     }
 
     private static void log(String format, String codigo, Double valor) {
-        String msg = String.format(format, codigo, valor);
+        String msg = String.format(LOCALE_BR, format, codigo, valor);
         System.out.println(msg);
         FileUtil.saveFile(filename, msg);
     }
 
     private static void log(String format, String codigo, int valor) {
-        String msg = String.format(format, codigo, valor);
+        String msg = String.format(LOCALE_BR, format, codigo, valor);
         System.out.println(msg);
         FileUtil.saveFile(filename, msg);
     }
 
     private static void log(String format, String codigo, Double valor1, Double valor2, Double valor3, Double valor4,
             Double valor5, Double valor6) {
-        String msg = String.format(format, codigo, valor1, valor2, valor3, valor4, valor5, valor6);
+        String msg = String.format(LOCALE_BR, format, codigo, valor1, valor2, valor3, valor4, valor5, valor6);
         System.out.println(msg);
         FileUtil.saveFile(filename, msg);
     }
