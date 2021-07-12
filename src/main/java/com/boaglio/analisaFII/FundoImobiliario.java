@@ -289,10 +289,7 @@ public class FundoImobiliario {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((dividendYield12Mmedia == null) ? 0 : dividendYield12Mmedia.hashCode());
-        result = prime * result + ((dividendYield3Mmedia == null) ? 0 : dividendYield3Mmedia.hashCode());
-        result = prime * result + ((dividendYield6Mmedia == null) ? 0 : dividendYield6Mmedia.hashCode());
-        result = prime * result + ((patrimonioLiquido == null) ? 0 : patrimonioLiquido.hashCode());
+        result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
         return result;
     }
 
@@ -305,25 +302,10 @@ public class FundoImobiliario {
         if (getClass() != obj.getClass())
             return false;
         FundoImobiliario other = (FundoImobiliario) obj;
-        if (dividendYield12Mmedia == null) {
-            if (other.dividendYield12Mmedia != null)
+        if (codigo == null) {
+            if (other.codigo != null)
                 return false;
-        } else if (!dividendYield12Mmedia.equals(other.dividendYield12Mmedia))
-            return false;
-        if (dividendYield3Mmedia == null) {
-            if (other.dividendYield3Mmedia != null)
-                return false;
-        } else if (!dividendYield3Mmedia.equals(other.dividendYield3Mmedia))
-            return false;
-        if (dividendYield6Mmedia == null) {
-            if (other.dividendYield6Mmedia != null)
-                return false;
-        } else if (!dividendYield6Mmedia.equals(other.dividendYield6Mmedia))
-            return false;
-        if (patrimonioLiquido == null) {
-            if (other.patrimonioLiquido != null)
-                return false;
-        } else if (!patrimonioLiquido.equals(other.patrimonioLiquido))
+        } else if (!codigo.equals(other.codigo))
             return false;
         return true;
     }

@@ -6,9 +6,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -58,13 +60,14 @@ public class Main {
         Document doc = Jsoup.connect(URL_FUNDSEXPLORER).get();
 
         List<FundoImobiliario> listaDeFundos = new ArrayList<>();
+        Set<FundoImobiliario> linkedHashSetListaDeFundos = new LinkedHashSet<>();
 
         Elements rows = doc.select("tr");
         int contador = 0;
         for (Element row : rows) {
             Elements columns = row.select("td");
             if (columns.size() > FUNDSEXPLORER_COLUMNS) {
-                listaDeFundos.add(LoadUtil.populateFI(columns));
+                linkedHashSetListaDeFundos.add(LoadUtil.populateFI(columns));
             }
             contador++;
         }
@@ -73,6 +76,8 @@ public class Main {
             System.out.println("Site [" + URL_FUNDSEXPLORER + "] inacessível. Tente mais tarde... =( ");
             System.exit(0);
         }
+
+        listaDeFundos = linkedHashSetListaDeFundos.stream().collect(Collectors.toList());
 
         Map<String, FundoImobiliario> mapFundos = listaDeFundos.stream()
                 .collect(Collectors.toMap(FundoImobiliario::getCodigo, Function.identity()));
