@@ -22,28 +22,28 @@ public class BestFII {
 
         // top por ativos
         fiiList.sort(Main.maiorPatrimonioLiquido);
-        List<FundoImobiliario> listAtivos = fiiList.stream().limit(Main.LISTA_DE_FUNDOS).collect(Collectors.toList());
+        List<FundoImobiliario> listAtivos = fiiList.stream().limit(Config.LISTA_DE_FUNDOS).collect(Collectors.toList());
         List<Rank> rankAtivos = listAtivos.stream().map(e -> new Rank(e.getCodigo(), fiiList.indexOf(e) + 1))
                 .collect(Collectors.toList());
         listAtivos.forEach(System.out::println);
 
         // top for DividendYield
         fiiList.sort(Main.maiorDividendYield);
-        List<FundoImobiliario> listDividendYield = fiiList.stream().limit(Main.LISTA_DE_FUNDOS)
+        List<FundoImobiliario> listDividendYield = fiiList.stream().limit(Config.LISTA_DE_FUNDOS)
                 .collect(Collectors.toList());
         List<Rank> rankDividendYield = listDividendYield.stream()
                 .map(e -> new Rank(e.getCodigo(), fiiList.indexOf(e) + 1)).collect(Collectors.toList());
 
         // top for DividendYield 12 meses acumulado
         fiiList.sort(Main.maiorDividendYield12Macumulado);
-        List<FundoImobiliario> listDividendYield12a = fiiList.stream().limit(Main.LISTA_DE_FUNDOS)
+        List<FundoImobiliario> listDividendYield12a = fiiList.stream().limit(Config.LISTA_DE_FUNDOS)
                 .collect(Collectors.toList());
         List<Rank> rankDividendYield12a = listDividendYield12a.stream()
                 .map(e -> new Rank(e.getCodigo(), fiiList.indexOf(e))).collect(Collectors.toList());
 
         // top for DividendYield 12 meses media
         fiiList.sort(Main.maiorDividendYield12Mmedia);
-        List<FundoImobiliario> listDividendYield12m = fiiList.stream().limit(Main.LISTA_DE_FUNDOS)
+        List<FundoImobiliario> listDividendYield12m = fiiList.stream().limit(Config.LISTA_DE_FUNDOS)
                 .collect(Collectors.toList());
         List<Rank> rankDividendYield12m = listDividendYield12m.stream()
                 .map(e -> new Rank(e.getCodigo(), fiiList.indexOf(e))).collect(Collectors.toList());

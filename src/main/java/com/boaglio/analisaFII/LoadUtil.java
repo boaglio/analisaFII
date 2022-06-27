@@ -67,7 +67,7 @@ public class LoadUtil {
 
         } catch (NumberFormatException | ParseException | ClassCastException nfe) {
             System.out.println("Erro na leitura: [" + str + "] " + nfe.getMessage());
-            Main.erros++;
+            Config.erros++;
         }
         return value;
     }
