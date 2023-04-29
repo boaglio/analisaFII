@@ -24,8 +24,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<main.class>com.boaglio.analisaFII.Main</main.class>
-		<java.version>11</java.version>
+		<main.class>com.boaglio.analisaFII.AnalisaFundosImobiliarios</main.class>
+		<java.version>17</java.version>
 		<junit.jupiter.version>5.4.2</junit.jupiter.version>
 		<maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
 		<maven.jar.plugin.version>3.1.1</maven.jar.plugin.version>
@@ -70,7 +70,7 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>3.0.0</version>
 				<configuration>
-					<mainClass>com.boaglio.analisaFII.Main</mainClass>
+					<mainClass>com.boaglio.analisaFII.AnalisaFundosImobiliarios</mainClass>
 				</configuration>
 			</plugin>
 

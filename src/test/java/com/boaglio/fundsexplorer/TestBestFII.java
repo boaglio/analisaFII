@@ -9,8 +9,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.boaglio.analisaFII.BestFII;
-import com.boaglio.analisaFII.FundoImobiliario;
-import com.boaglio.analisaFII.Rank;
+import com.boaglio.analisaFII.vo.FundoImobiliario;
+import com.boaglio.analisaFII.vo.Rank;
 
 public class TestBestFII {
 
@@ -20,13 +20,13 @@ public class TestBestFII {
     @BeforeAll
     static void init() {
      // @formatter:off
-     fiiList = new ArrayList<FundoImobiliario>( List.of(
-        new FundoImobiliario ("XPLG11",SETOR, 0.64, 6.55,0.52,5111.1),
-        new FundoImobiliario ("LVBI11",SETOR, 0.14, 1.55,0.72,2111.1),
-        new FundoImobiliario ("GGRC11",SETOR, 0.54, 8.55,0.42,7111.1),
-        new FundoImobiliario ("PQAG11",SETOR, 0.74, 9.55,0.52,4111.1),
-        new FundoImobiliario ("SDIL11",SETOR, 0.34, 2.55,0.12,3111.1),
-        new FundoImobiliario ("LGCP11",SETOR, 0.64, 6.55,0.52,1111.1)
+     fiiList = new ArrayList<FundoImobiliario>( List.of( 
+        new FundoImobiliario ("XPLG11",SETOR, 0.64, 6.55,0.52,5111.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+        new FundoImobiliario ("LVBI11",SETOR, 0.14, 1.55,0.72,2111.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+        new FundoImobiliario ("GGRC11",SETOR, 0.54, 8.55,0.42,7111.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+        new FundoImobiliario ("PQAG11",SETOR, 0.74, 9.55,0.52,4111.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+        new FundoImobiliario ("SDIL11",SETOR, 0.34, 2.55,0.12,3111.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+        new FundoImobiliario ("LGCP11",SETOR, 0.64, 6.55,0.52,1111.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
     ));
      // @formatter:on
     }
@@ -43,7 +43,7 @@ public class TestBestFII {
 
         System.out.println("Top FII: " + top.get(0));
 
-        assertEquals("PQAG11", top.get(0).getName());
-        assertEquals("XPLG11", top.get(1).getName());
+        assertEquals("PQAG11", top.get(0).name());
+        assertEquals("XPLG11", top.get(1).name());
     }
 }

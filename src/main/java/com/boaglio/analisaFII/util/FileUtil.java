@@ -1,4 +1,6 @@
-package com.boaglio.analisaFII;
+package com.boaglio.analisaFII.util;
+
+import com.boaglio.analisaFII.Config;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,11 +15,11 @@ public class FileUtil {
 
     static String RESOURCES = System.getProperty("user.dir") + File.separator + "analises" + File.separator;
 
-    static public void saveFile(String fileName, String line) {
+    static public void saveFile(String filename, String line) {
 
         try {
-            final Path pathFilename = Paths.get(RESOURCES + File.separator + fileName);
-            Files.write(pathFilename, (line + "\n").getBytes(StandardCharsets.UTF_8),
+            final Path pathFilename = Paths.get(RESOURCES + File.separator + filename);
+            Files.writeString(pathFilename, line + "\n",
                     Files.exists(pathFilename, LinkOption.NOFOLLOW_LINKS) ? StandardOpenOption.APPEND
                             : StandardOpenOption.CREATE);
 
@@ -26,4 +28,16 @@ public class FileUtil {
         }
 
     }
+
+    static public void deleteOldFile() {
+
+        try {
+            final Path pathFilename = Paths.get(RESOURCES + File.separator + Config.ARQUIVO_COM_ANALISE);
+            Files.deleteIfExists(pathFilename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

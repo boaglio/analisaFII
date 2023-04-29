@@ -4,13 +4,15 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class Config {
+public final class Config {
+
+    private Config() {}
 
     public static final Locale LOCALE_BR = new Locale("pt", "BR");
 
-    public static String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    public static final String HOJE = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-    public static String filename = today + "-fundsexplorer.txt";
+    public static final String ARQUIVO_COM_ANALISE = HOJE + "-fundsexplorer.md";
 
     public static final int FUNDSEXPLORER_COLUMNS = 24;
 
