@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.boaglio.analisaFII.BestFII;
+import com.boaglio.analisaFII.analise.BestFII;
 import com.boaglio.analisaFII.vo.FundoImobiliario;
 import com.boaglio.analisaFII.vo.Rank;
 

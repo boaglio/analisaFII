@@ -4,14 +4,14 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
-import com.boaglio.analisaFII.Config;
+import com.boaglio.analisaFII.config.Config;
 import com.boaglio.analisaFII.vo.FundoImobiliario;
 import org.jsoup.select.Elements;
 
 public class LoadUtil {
 
     private static final Locale  LOCALE_BR = new Locale("pt", "BR");
-    private static DecimalFormat df        = (DecimalFormat) DecimalFormat.getInstance(LOCALE_BR);
+    private static final DecimalFormat DECIMAL_FORMAT = (DecimalFormat) DecimalFormat.getInstance(LOCALE_BR);
 
     public static FundoImobiliario populateFI(Elements columns) {
         int pos = 0;
@@ -40,17 +40,17 @@ public class LoadUtil {
         var rentabilidadePatrimonialAcumulada = readDouble(columns, pos++);
         var vacanciaFisica = readDouble(columns, pos++);
         var vacanciaFinanceira = readDouble(columns, pos++);
-        var quantidadeAtivos = readDouble(columns, pos++);
+        var quantidadeAtivos = readDouble(columns, pos);
 
         if (setor.isEmpty()) setor = "Outros";
 
-        var fi = new FundoImobiliario(codigo, setor, precoAtual, liquidezDiaria, dividendo, dividendYield,
+        return new FundoImobiliario(codigo, setor, precoAtual, liquidezDiaria, dividendo, dividendYield,
                 dividendYield3Macumulado, dividendYield6Macumulado, dividendYield12Macumulado, dividendYield3Mmedia,
                 dividendYield6Mmedia, dividendYield12Mmedia, dividendYieldAno, variacaoPreco, rentabilidadePeriodo,
                 rentabilidadeAcumulada, patrimonioLiquido, VPA, PVPA, dividendYieldPatrimonial, variacaoPatrimonial,
                 rentabilidadePatrimonialNoPeríodo, rentabilidadePatrimonialAcumulada, vacanciaFisica,
                 vacanciaFinanceira, quantidadeAtivos);
-        return fi;
+
     }
 
     private static Double readDouble(Elements el, int position) {
@@ -59,10 +59,9 @@ public class LoadUtil {
         try {
             str = el.get(position).text().replace("R$ ", "").replace("%", "").replace("N/A", "").replace("Inf", "");
 
-            if (str != null && !str.isEmpty()) {
-                Object obj = df.parse(str);
-                if (obj instanceof Long) {
-                    Long l = (Long) obj;
+            if (!str.isEmpty()) {
+                Object obj = DECIMAL_FORMAT.parse(str);
+                if (obj instanceof Long l) {
                     value = Double.valueOf(l);
                 } else {
                     value = (Double) obj;

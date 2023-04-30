@@ -1,6 +1,6 @@
 package com.boaglio.analisaFII.util;
 
-import com.boaglio.analisaFII.Config;
+import com.boaglio.analisaFII.config.Config;
 
 public class Plot {
 

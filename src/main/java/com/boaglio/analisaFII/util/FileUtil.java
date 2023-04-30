@@ -1,10 +1,9 @@
 package com.boaglio.analisaFII.util;
 
-import com.boaglio.analisaFII.Config;
+import com.boaglio.analisaFII.config.Config;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;

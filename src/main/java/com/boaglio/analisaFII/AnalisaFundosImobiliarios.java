@@ -1,5 +1,8 @@
 package com.boaglio.analisaFII;
 
+import com.boaglio.analisaFII.analise.BestFII;
+import com.boaglio.analisaFII.config.Config;
+import com.boaglio.analisaFII.type.TipoDeFundo;
 import com.boaglio.analisaFII.util.FileUtil;
 import com.boaglio.analisaFII.util.LoadUtil;
 import com.boaglio.analisaFII.util.Plot;
@@ -21,21 +24,20 @@ public class AnalisaFundosImobiliarios {
     // @formatter:off
     public final static Comparator<FundoImobiliario> maiorPatrimonioLiquido         = Comparator.comparing(FundoImobiliario::patrimonioLiquido).reversed();
     public final static Comparator<FundoImobiliario> maiorDividendYield             = Comparator.comparing(FundoImobiliario::dividendYield).reversed();
-    public final static Comparator<FundoImobiliario> maiorDividendYield12Macumulado = Comparator.comparing(FundoImobiliario::dividendYield12Macumulado).reversed();
     public final static Comparator<FundoImobiliario> maiorDividendYield12Mmedia     = Comparator.comparing(FundoImobiliario::dividendYield12Mmedia).reversed();
+    public final static Comparator<FundoImobiliario> maiorPVPA                      = Comparator.comparing(FundoImobiliario::PVPA).reversed();
     // @formatter:on
 
-    private static final String FUNDOS_DIV_YIELD_FORMAT ="| %-10s | %5.2f%% |";
-    private static final String FUNDOS_PATRIMONIO_FORMAT ="| %-10s |  R$%,.2f |";
+    private static final String FUNDOS_DIV_YIELD_FORMAT = "| %-10s | %5.2f%% |";
+    private static final String FUNDOS_PATRIMONIO_FORMAT = "| %-10s |  R$%,.2f |";
     private static final String FUNDOS_POR_SETOR_FORMAT = "| %-20s |  %2d |";
-
+    private static final String FUNDOS_PVPA_FORMAT = "| %-10s | %5.2f |";
     private static final String FUNDOS_RANKING_FORMAT = "| %-8s | %5.2f | R$ %7.2f | %5.2f%% | %5.2f%% | %5.2f%% | R$%,.2f |";
     private static int contador = 0;
 
     public static void main(String[] args) throws IOException {
 
-        List<FundoImobiliario> listaDeFundos = new ArrayList<>();
-        listaDeFundos = new ArrayList<>(parseListaDeFundos());
+        List<FundoImobiliario> listaDeFundos = new ArrayList<>(parseListaDeFundos());
 
         Map<String, FundoImobiliario> mapFundos = listaDeFundos.stream()
                 .collect(Collectors.toMap(FundoImobiliario::codigo,
@@ -47,7 +49,7 @@ public class AnalisaFundosImobiliarios {
         Plot.log("# Análise dos Fundos Imobiliários ");
         Plot.newLine();
 
-        Plot.log("| Data                  | *" + Config.HOJE +"* |");
+        Plot.log("| Data                  | *" + Config.AGORA +"* |");
         Plot.log("| - | - |");
         Plot.log("| Total de fundos lidos | " + contador + "|");
         Plot.log("| Tamanho da lista de fundos | " + listaDeFundos.size()+ "|");
@@ -77,6 +79,15 @@ public class AnalisaFundosImobiliarios {
         showDetailsFI(TipoDeFundo.SETOR_SHOPPINGS.nome(), fundosShopping);
         showDetailsFI(TipoDeFundo.SETOR_LAJES_CORPORATIVAS.nome(), fundosLajesCorporativas);
         showDetailsFI(TipoDeFundo.SETOR_TITULOS_E_VAL_MOB.nome(), fundosTitulosValMob);
+
+        Plot.newLine();
+        Plot.log("## Critérios do ranking");
+        Plot.log("| Propriedade | Peso | ");
+        Plot.tableLine();
+        Plot.log("| Patrimonio Líquido | " +  Config.PESO_MUITA_IMPORTANCIA +"| ");
+        Plot.log("| Dividend Yield 12 Meses - média | " +  Config.PESO_MEDIA_IMPORTANCIA +"| ");
+        Plot.log("| Dividend Yield | " +  Config.PESO_POUCA_IMPORTANCIA +"| ");
+        Plot.log("| Preço/Valor Patrimonial (P/VPA) | " +  Config.PESO_POUCA_IMPORTANCIA +"| ");
 
         Plot.log("## Rankings por setor");
         Plot.newLine();
@@ -110,20 +121,20 @@ public class AnalisaFundosImobiliarios {
                 .forEach(f -> Plot.log(FUNDOS_DIV_YIELD_FORMAT, f.codigo(), f.dividendYield()));
         Plot.newLine();
 
-        Plot.log("|" + setor + " | Maior Dividend Yield acumulado em 12 meses |");
-        Plot.tableLine();
-        fundosLogistica.sort(maiorDividendYield12Macumulado);
-        fundosLogistica.stream().limit(Config.LISTA_DE_FUNDOS)
-                .forEach(f -> Plot.log(FUNDOS_DIV_YIELD_FORMAT, f.codigo(), f.dividendYield12Macumulado()));
-        Plot.newLine();
-
         Plot.log("| " + setor + " | Maior Dividend Yield médio em 12 meses |");
         Plot.tableLine();
         fundosLogistica.sort(maiorDividendYield12Mmedia);
-
         fundosLogistica.stream().limit(Config.LISTA_DE_FUNDOS)
                 .forEach(f -> Plot.log(FUNDOS_DIV_YIELD_FORMAT, f.codigo(), f.dividendYield12Mmedia()));
         Plot.newLine();
+
+        Plot.log("| " + setor + " | Preço/Valor Patrimonial (P/VPA)|");
+        Plot.tableLine();
+        fundosLogistica.sort(maiorPVPA);
+        fundosLogistica.stream().limit(Config.LISTA_DE_FUNDOS)
+                .forEach(f -> Plot.log(FUNDOS_PVPA_FORMAT, f.codigo(), f.PVPA()  ));
+        Plot.newLine();
+
     }
 
     private static void showRankFI(String setor, List<Rank> rank, Map<String, FundoImobiliario> mapFundos) {
@@ -131,7 +142,7 @@ public class AnalisaFundosImobiliarios {
         Plot.log("### " + setor + " - melhores FII ");
         Plot.newLine();
 
-        Plot.log(" | Código | Pontos | Preço | Div.Yeld | DY12M m| DY12M a | Patrimônio líquido | ");
+        Plot.log(" | Código | Pontos no Rank | Preço | Div.Yeld | DY12M m| DY12M a | Patrimônio líquido | ");
         Plot.log(" |-----| ----- | -----| ---- |---- | ---- | ----: |");
         rank.stream().limit(Config.LISTA_DE_FUNDOS).forEach(r -> {
             FundoImobiliario fii = mapFundos.get(r.name());
@@ -145,7 +156,7 @@ public class AnalisaFundosImobiliarios {
 
     private static HashSet<FundoImobiliario> parseListaDeFundos() throws IOException {
 
-        Document doc = Jsoup.connect(TipoDeFundo.URL_FUNDSEXPLORER.nome()).get();
+        Document doc = Jsoup.connect(Config.URL_FUNDSEXPLORER).get();
         HashSet<FundoImobiliario> hashSetListaDeFundos = new HashSet<>();
 
         Elements rows = doc.select("tr");
@@ -160,7 +171,7 @@ public class AnalisaFundosImobiliarios {
 
         if (contador == 0) {
             System.out.println(
-                    "Site [" + TipoDeFundo.URL_FUNDSEXPLORER.nome() + "] inacessível. Tente mais tarde... =( ");
+                    "Site [" + Config.URL_FUNDSEXPLORER + "] inacessível. Tente mais tarde... =( ");
             System.exit(0);
         }
 
