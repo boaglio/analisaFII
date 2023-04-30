@@ -1,7 +1,7 @@
 # Análise dos Fundos Imobiliários 
 
 
-| Data                  | *2023-04-30 19:51* |
+| Data                  | *2023-04-30 20:23* |
 | - | - |
 | Total de fundos lidos | 327|
 | Tamanho da lista de fundos | 326|

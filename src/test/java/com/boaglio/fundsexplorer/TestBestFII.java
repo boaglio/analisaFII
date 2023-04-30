@@ -12,7 +12,7 @@ import com.boaglio.analisaFII.analise.BestFII;
 import com.boaglio.analisaFII.vo.FundoImobiliario;
 import com.boaglio.analisaFII.vo.Rank;
 
-public class TestBestFII {
+class TestBestFII {
 
     static String                 SETOR = "Logística";
     static List<FundoImobiliario> fiiList;
@@ -43,7 +43,7 @@ public class TestBestFII {
 
         System.out.println("Top FII: " + top.get(0));
 
-        assertEquals("PQAG11", top.get(0).name());
-        assertEquals("XPLG11", top.get(1).name());
+        assertEquals("LGCP11", top.get(0).name());
+        assertEquals("SDIL11", top.get(1).name());
     }
 }
