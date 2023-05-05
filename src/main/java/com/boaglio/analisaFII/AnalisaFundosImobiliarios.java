@@ -25,13 +25,12 @@ public class AnalisaFundosImobiliarios {
     public final static Comparator<FundoImobiliario> maiorPatrimonioLiquido         = Comparator.comparing(FundoImobiliario::patrimonioLiquido).reversed();
     public final static Comparator<FundoImobiliario> maiorDividendYield             = Comparator.comparing(FundoImobiliario::dividendYield).reversed();
     public final static Comparator<FundoImobiliario> maiorDividendYield12Mmedia     = Comparator.comparing(FundoImobiliario::dividendYield12Mmedia).reversed();
-    public final static Comparator<FundoImobiliario> maiorPVPA                      = Comparator.comparing(FundoImobiliario::PVPA).reversed();
+
     // @formatter:on
 
     private static final String FUNDOS_DIV_YIELD_FORMAT = "| %-10s | %5.2f%% |";
     private static final String FUNDOS_PATRIMONIO_FORMAT = "| %-10s |  R$%,.2f |";
     private static final String FUNDOS_POR_SETOR_FORMAT = "| %-20s |  %2d |";
-    private static final String FUNDOS_PVPA_FORMAT = "| %-10s | %5.2f |";
     private static final String FUNDOS_RANKING_FORMAT = "| %-8s | %5.2f | R$ %7.2f | %5.2f%% | %5.2f%% | %5.2f%% | R$%,.2f |";
     private static int contador = 0;
 
@@ -42,7 +41,7 @@ public class AnalisaFundosImobiliarios {
         Map<String, FundoImobiliario> mapFundos = listaDeFundos.stream()
                 .collect(Collectors.toMap(FundoImobiliario::codigo,
                           Function.identity(),
-                        (existing, replacement) -> existing)); //
+                        (existing, replacement) -> existing));
 
         FileUtil.deleteOldFile();
 
@@ -110,29 +109,22 @@ public class AnalisaFundosImobiliarios {
         Plot.tableLine();
 
         fundosLogistica.sort(maiorPatrimonioLiquido);
-        fundosLogistica.stream().limit(Config.LISTA_DE_FUNDOS)
+        fundosLogistica.stream().limit(Config.QUANTIDADE_FII)
                 .forEach(f -> Plot.log(FUNDOS_PATRIMONIO_FORMAT, f.codigo(), f.patrimonioLiquido()));
         Plot.newLine();
 
         Plot.log("| " + setor + " | Maior Dividend Yield  |");
         Plot.tableLine();
         fundosLogistica.sort(maiorDividendYield);
-        fundosLogistica.stream().limit(Config.LISTA_DE_FUNDOS)
+        fundosLogistica.stream().limit(Config.QUANTIDADE_FII)
                 .forEach(f -> Plot.log(FUNDOS_DIV_YIELD_FORMAT, f.codigo(), f.dividendYield()));
         Plot.newLine();
 
         Plot.log("| " + setor + " | Maior Dividend Yield médio em 12 meses |");
         Plot.tableLine();
         fundosLogistica.sort(maiorDividendYield12Mmedia);
-        fundosLogistica.stream().limit(Config.LISTA_DE_FUNDOS)
+        fundosLogistica.stream().limit(Config.QUANTIDADE_FII)
                 .forEach(f -> Plot.log(FUNDOS_DIV_YIELD_FORMAT, f.codigo(), f.dividendYield12Mmedia()));
-        Plot.newLine();
-
-        Plot.log("| " + setor + " | Preço/Valor Patrimonial (P/VPA)|");
-        Plot.tableLine();
-        fundosLogistica.sort(maiorPVPA);
-        fundosLogistica.stream().limit(Config.LISTA_DE_FUNDOS)
-                .forEach(f -> Plot.log(FUNDOS_PVPA_FORMAT, f.codigo(), f.PVPA()  ));
         Plot.newLine();
 
     }
@@ -144,7 +136,7 @@ public class AnalisaFundosImobiliarios {
 
         Plot.log(" | Código | Pontos no Rank | Preço | Div.Yeld | DY12M m| DY12M a | Patrimônio líquido | ");
         Plot.log(" |-----| ----- | -----| ---- |---- | ---- | ----: |");
-        rank.stream().limit(Config.LISTA_DE_FUNDOS).forEach(r -> {
+        rank.stream().limit(Config.QUANTIDADE_FII).forEach(r -> {
             FundoImobiliario fii = mapFundos.get(r.name());
             Plot.log(FUNDOS_RANKING_FORMAT, r.name(), r.value(),
                     fii.precoAtual(), fii.dividendYield(), fii.dividendYield12Mmedia(),

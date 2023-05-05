@@ -21,11 +21,11 @@ public final class Config {
 
     public static final int FUNDSEXPLORER_COLUMNS = 24;
 
-    public static final int LISTA_DE_FUNDOS = 10;
+    public static final int QUANTIDADE_FII = 10;
 
-    public static final double PESO_POUCA_IMPORTANCIA = 0.2;
-    public static final double PESO_MEDIA_IMPORTANCIA = 0.3;
-    public static final double PESO_MUITA_IMPORTANCIA = 0.5;
+    public static final double PESO_POUCA_IMPORTANCIA = 1;
+    public static final double PESO_MEDIA_IMPORTANCIA = 2;
+    public static final double PESO_MUITA_IMPORTANCIA = 4;
 
     public static int erros = 0;
 

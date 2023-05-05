@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.boaglio.analisaFII.config.Config.QUANTIDADE_FII;
+
 public class BestFII {
 
     public static List<Rank> getList(List<FundoImobiliario> fiiList) {
@@ -19,23 +21,27 @@ public class BestFII {
 
         // top por ativos
         fiiList.sort(AnalisaFundosImobiliarios.maiorPatrimonioLiquido);
-        List<FundoImobiliario> listAtivos = fiiList.stream().limit(Config.LISTA_DE_FUNDOS).toList();
-        List<Rank> rankAtivos = listAtivos.stream().map(e -> new Rank(e.codigo(), fiiList.indexOf(e) + 1 * Config.PESO_MUITA_IMPORTANCIA)).toList();
+        List<FundoImobiliario> listAtivos = fiiList.stream().limit(QUANTIDADE_FII).toList();
+        List<Rank> rankAtivos = listAtivos.stream().map(e -> new Rank(e.codigo(), (QUANTIDADE_FII - fiiList.indexOf(e)) * Config.PESO_MUITA_IMPORTANCIA)).toList();
+
+        System.out.println( " Rank Ativos: " );
+        rankAtivos.forEach(System.out::println);
 
         // top for DividendYield
         fiiList.sort(AnalisaFundosImobiliarios.maiorDividendYield);
-        List<FundoImobiliario> listDividendYield = fiiList.stream().limit(Config.LISTA_DE_FUNDOS).toList();
-        List<Rank> rankDividendYield = listDividendYield.stream().map(e -> new Rank(e.codigo(), fiiList.indexOf(e) + 1 * Config.PESO_POUCA_IMPORTANCIA )).toList();
+        List<FundoImobiliario> listDividendYield = fiiList.stream().limit(QUANTIDADE_FII).toList();
+        List<Rank> rankDividendYield = listDividendYield.stream().map(e -> new Rank(e.codigo(), (QUANTIDADE_FII - fiiList.indexOf(e)) * Config.PESO_POUCA_IMPORTANCIA )).toList();
+
+        System.out.println( " Rank Dividend Yield " );
+        rankDividendYield.forEach(System.out::println);
 
         // top for DividendYield 12 meses media
         fiiList.sort(AnalisaFundosImobiliarios.maiorDividendYield12Mmedia);
-        List<FundoImobiliario> listDividendYield12m = fiiList.stream().limit(Config.LISTA_DE_FUNDOS).toList();
-        List<Rank> rankDividendYield12m = listDividendYield12m.stream().map(e -> new Rank(e.codigo(), fiiList.indexOf(e)+1 * Config.PESO_MEDIA_IMPORTANCIA )).toList();
+        List<FundoImobiliario> listDividendYield12m = fiiList.stream().limit(QUANTIDADE_FII).toList();
+        List<Rank> rankDividendYield12m = listDividendYield12m.stream().map(e -> new Rank(e.codigo(), (QUANTIDADE_FII - fiiList.indexOf(e)) * Config.PESO_MEDIA_IMPORTANCIA )).toList();
 
-        // top for Preço/Valor Patrimonial
-        fiiList.sort(AnalisaFundosImobiliarios.maiorPVPA);
-        List<FundoImobiliario> listPVPA = fiiList.stream().limit(Config.LISTA_DE_FUNDOS).toList();
-        List<Rank> rankPVPA = listPVPA.stream().map(e -> new Rank(e.codigo(), fiiList.indexOf(e)+1 * Config.PESO_POUCA_IMPORTANCIA)).toList();
+        System.out.println( " Rank Dividend Yield 12m " );
+        rankDividendYield12m.forEach(System.out::println);
 
         // aplica rank patrimonio liquido
         rankAtivos.forEach(r -> {
@@ -51,12 +57,6 @@ public class BestFII {
 
         // aplica rank Dividend Yield
         rankDividendYield.forEach(r -> {
-            double rankAtual = topRank.getOrDefault(r.name(), 0.0);
-            topRank.put(r.name(), rankAtual + r.value() );
-        });
-
-        // aplica rank P/VPA
-        rankPVPA.forEach(r -> {
             double rankAtual = topRank.getOrDefault(r.name(), 0.0);
             topRank.put(r.name(), rankAtual + r.value() );
         });
