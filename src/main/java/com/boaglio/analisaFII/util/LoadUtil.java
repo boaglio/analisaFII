@@ -14,11 +14,14 @@ public class LoadUtil {
     private static final DecimalFormat DECIMAL_FORMAT = (DecimalFormat) DecimalFormat.getInstance(LOCALE_BR);
 
     public static FundoImobiliario populateFI(Elements columns) {
+
+
         int pos = 0;
         var codigo = readString(columns, pos++);
         var setor = readString(columns, pos++);
         var precoAtual = readDouble(columns, pos++);
         var liquidezDiaria = readDouble(columns, pos++);
+        var PVP = readDouble(columns, pos++);
         var dividendo = readDouble(columns, pos++);
         var dividendYield = readDouble(columns, pos++);
         var dividendYield3Macumulado = readDouble(columns, pos++);
@@ -44,7 +47,7 @@ public class LoadUtil {
 
         if (setor.isEmpty()) setor = "Outros";
 
-        return new FundoImobiliario(codigo, setor, precoAtual, liquidezDiaria, dividendo, dividendYield,
+        return new FundoImobiliario(codigo, setor, precoAtual, liquidezDiaria, PVP, dividendo, dividendYield,
                 dividendYield3Macumulado, dividendYield6Macumulado, dividendYield12Macumulado, dividendYield3Mmedia,
                 dividendYield6Mmedia, dividendYield12Mmedia, dividendYieldAno, variacaoPreco, rentabilidadePeriodo,
                 rentabilidadeAcumulada, patrimonioLiquido, VPA, PVPA, dividendYieldPatrimonial, variacaoPatrimonial,

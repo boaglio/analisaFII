@@ -5,6 +5,7 @@ public record FundoImobiliario(
         String setor,
         Double precoAtual,
         Double liquidezDiaria,
+        Double PVP,
         Double dividendo,
         Double dividendYield,
         Double dividendYield3Macumulado,
