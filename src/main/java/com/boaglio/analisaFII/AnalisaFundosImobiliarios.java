@@ -4,14 +4,10 @@ import com.boaglio.analisaFII.analise.BestFII;
 import com.boaglio.analisaFII.config.Config;
 import com.boaglio.analisaFII.type.TipoDeFundo;
 import com.boaglio.analisaFII.util.FileUtil;
-import com.boaglio.analisaFII.util.LoadUtil;
 import com.boaglio.analisaFII.util.Plot;
+import com.boaglio.analisaFII.util.WebCrawlerUtil;
 import com.boaglio.analisaFII.vo.FundoImobiliario;
 import com.boaglio.analisaFII.vo.Rank;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.*;
@@ -21,22 +17,19 @@ import java.util.stream.Collectors;
 public class AnalisaFundosImobiliarios {
 
     // criterios
-    // @formatter:off
     public final static Comparator<FundoImobiliario> maiorPatrimonioLiquido         = Comparator.comparing(FundoImobiliario::patrimonioLiquido).reversed();
     public final static Comparator<FundoImobiliario> maiorDividendYield             = Comparator.comparing(FundoImobiliario::dividendYield).reversed();
     public final static Comparator<FundoImobiliario> maiorDividendYield12Mmedia     = Comparator.comparing(FundoImobiliario::dividendYield12Mmedia).reversed();
-
-    // @formatter:on
 
     private static final String FUNDOS_DIV_YIELD_FORMAT = "| %-10s | %5.2f%% |";
     private static final String FUNDOS_PATRIMONIO_FORMAT = "| %-10s |  R$%,.2f |";
     private static final String FUNDOS_POR_SETOR_FORMAT = "| %-20s |  %2d |";
     private static final String FUNDOS_RANKING_FORMAT = "| %-8s | %5.2f | R$ %7.2f | %5.2f%% | %5.2f%% | %5.2f%% | R$%,.2f |";
-    private static int contador = 0;
+    public static int contador = 0;
 
     public static void main(String[] args) throws IOException {
 
-        List<FundoImobiliario> listaDeFundos = new ArrayList<>(parseListaDeFundos());
+        List<FundoImobiliario> listaDeFundos = new ArrayList<>(WebCrawlerUtil.parseListaDeFundos());
 
         Map<String, FundoImobiliario> mapFundos = listaDeFundos.stream()
                 .collect(Collectors.toMap(FundoImobiliario::codigo,
@@ -72,12 +65,14 @@ public class AnalisaFundosImobiliarios {
         List<FundoImobiliario> fundosLogistica = fundosPorSetor.get(TipoDeFundo.SETOR_LOGISTICA.nome());
         List<FundoImobiliario> fundosShopping = fundosPorSetor.get(TipoDeFundo.SETOR_SHOPPINGS.nome());
         List<FundoImobiliario> fundosLajesCorporativas = fundosPorSetor.get(TipoDeFundo.SETOR_LAJES_CORPORATIVAS.nome());
-        List<FundoImobiliario> fundosTitulosValMob = fundosPorSetor.get(TipoDeFundo.SETOR_TITULOS_E_VAL_MOB.nome());
+        List<FundoImobiliario> fundosPapeis = fundosPorSetor.get(TipoDeFundo.SETOR_PAPEL.nome());
+        List<FundoImobiliario> fundosMisto = fundosPorSetor.get(TipoDeFundo.SETOR_MISTO.nome());
 
         showDetailsFI(TipoDeFundo.SETOR_LOGISTICA.nome(), fundosLogistica);
         showDetailsFI(TipoDeFundo.SETOR_SHOPPINGS.nome(), fundosShopping);
         showDetailsFI(TipoDeFundo.SETOR_LAJES_CORPORATIVAS.nome(), fundosLajesCorporativas);
-        showDetailsFI(TipoDeFundo.SETOR_TITULOS_E_VAL_MOB.nome(), fundosTitulosValMob);
+        showDetailsFI(TipoDeFundo.SETOR_PAPEL.nome(), fundosPapeis);
+        showDetailsFI(TipoDeFundo.SETOR_MISTO.nome(), fundosMisto);
 
         Plot.newLine();
         Plot.log("## Critérios do ranking");
@@ -94,12 +89,14 @@ public class AnalisaFundosImobiliarios {
         List<Rank> rankFundosLogistica = BestFII.getList(fundosLogistica);
         List<Rank> rankFundosShopping = BestFII.getList(fundosShopping);
         List<Rank> rankFundosLajesCorporativas = BestFII.getList(fundosLajesCorporativas);
-        List<Rank> rankFundosTitulosValMob = BestFII.getList(fundosTitulosValMob);
+        List<Rank> rankFundosPapeis = BestFII.getList(fundosPapeis);
+        List<Rank> rankFundosMisto = BestFII.getList(fundosMisto);
 
         showRankFI(TipoDeFundo.SETOR_LOGISTICA.nome(), rankFundosLogistica, mapFundos);
         showRankFI(TipoDeFundo.SETOR_SHOPPINGS.nome(), rankFundosShopping, mapFundos);
         showRankFI(TipoDeFundo.SETOR_LAJES_CORPORATIVAS.nome(), rankFundosLajesCorporativas, mapFundos);
-        showRankFI(TipoDeFundo.SETOR_TITULOS_E_VAL_MOB.nome(), rankFundosTitulosValMob, mapFundos);
+        showRankFI(TipoDeFundo.SETOR_PAPEL.nome(), rankFundosPapeis, mapFundos);
+        showRankFI(TipoDeFundo.SETOR_MISTO.nome(), rankFundosMisto, mapFundos);
 
     }
 
@@ -144,30 +141,6 @@ public class AnalisaFundosImobiliarios {
         });
         Plot.newLine();
 
-    }
-
-    private static HashSet<FundoImobiliario> parseListaDeFundos() throws IOException {
-
-        Document doc = Jsoup.connect(Config.URL_FUNDSEXPLORER).get();
-        HashSet<FundoImobiliario> hashSetListaDeFundos = new HashSet<>();
-
-        Elements rows = doc.select("tr");
-
-        for (Element row : rows) {
-            Elements columns = row.select("td");
-            if (columns.size() > Config.FUNDSEXPLORER_COLUMNS) {
-                hashSetListaDeFundos.add(LoadUtil.populateFI(columns));
-            }
-            contador++;
-        }
-
-        if (contador == 0) {
-            System.out.println(
-                    "Site [" + Config.URL_FUNDSEXPLORER + "] inacessível. Tente mais tarde... =( ");
-            System.exit(0);
-        }
-
-        return hashSetListaDeFundos;
     }
 
 }

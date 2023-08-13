@@ -39,6 +39,11 @@
 			<version>1.13.1</version>
 		</dependency>
 		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.141.59</version>
+		</dependency>
+		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<version>${junit.jupiter.version}</version>
@@ -73,7 +78,7 @@
 					<mainClass>com.boaglio.analisaFII.AnalisaFundosImobiliarios</mainClass>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
+
 </project>

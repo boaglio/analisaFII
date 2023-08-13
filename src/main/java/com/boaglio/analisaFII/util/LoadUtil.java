@@ -10,7 +10,7 @@ import org.jsoup.select.Elements;
 
 public class LoadUtil {
 
-    private static final Locale  LOCALE_BR = new Locale("pt", "BR");
+    private static final Locale  LOCALE_BR =  new Locale("pt", "BR");
     private static final DecimalFormat DECIMAL_FORMAT = (DecimalFormat) DecimalFormat.getInstance(LOCALE_BR);
 
     public static FundoImobiliario populateFI(Elements columns) {

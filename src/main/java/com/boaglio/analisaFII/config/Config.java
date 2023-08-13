@@ -11,7 +11,7 @@ public final class Config {
 
     public static final String URL_FUNDSEXPLORER = "https://www.fundsexplorer.com.br/ranking";
 
-    public static final Locale LOCALE_BR = new Locale("pt", "BR");
+    public static final Locale LOCALE_BR =  new Locale("pt", "BR");
 
     public static final String HOJE = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 

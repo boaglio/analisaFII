@@ -2,10 +2,14 @@ package com.boaglio.analisaFII.type;
 
 public enum TipoDeFundo {
 
-    SETOR_TITULOS_E_VAL_MOB("Títulos e Val. Mob."),
     SETOR_LAJES_CORPORATIVAS("Lajes Corporativas"),
     SETOR_SHOPPINGS("Shoppings"),
-    SETOR_LOGISTICA("Logística");
+    SETOR_LOGISTICA("Imóveis Industriais e Logísticos"),
+    SETOR_PAPEL("Papéis"),
+    SETOR_MISTO("Misto"),
+    SETOR_FUNDO_DE_FUNDOS("Fundo de Fundos"),
+    INDEFINIDO("Indefinido")
+    ;
     TipoDeFundo(String nome) {
         this.nome = nome;
     }
