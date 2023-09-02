@@ -27,21 +27,25 @@
 		<main.class>com.boaglio.analisaFII.AnalisaFundosImobiliarios</main.class>
 		<java.version>17</java.version>
 		<junit.jupiter.version>5.4.2</junit.jupiter.version>
+		<jsoup.version>1.13.1</jsoup.version>
 		<maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
 		<maven.jar.plugin.version>3.1.1</maven.jar.plugin.version>
 		<maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
+		<maven.exec.plugin.version>3.0.0</maven.exec.plugin.version>
+		<selenium.java.version>4.11.0</selenium.java.version>
+		<webdrivermanager.version>5.5.2</webdrivermanager.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.13.1</version>
+			<version>${jsoup.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>3.141.59</version>
+			<version>${selenium.java.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -54,6 +58,11 @@
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>${junit.jupiter.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>${webdrivermanager.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -73,7 +82,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>${maven.exec.plugin.version}</version>
 				<configuration>
 					<mainClass>com.boaglio.analisaFII.AnalisaFundosImobiliarios</mainClass>
 				</configuration>

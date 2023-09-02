@@ -9,7 +9,6 @@ import com.boaglio.analisaFII.util.WebCrawlerUtil;
 import com.boaglio.analisaFII.vo.FundoImobiliario;
 import com.boaglio.analisaFII.vo.Rank;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -27,13 +26,13 @@ public class AnalisaFundosImobiliarios {
     private static final String FUNDOS_RANKING_FORMAT = "| %-8s | %5.2f | R$ %7.2f | %5.2f%% | %5.2f%% | %5.2f%% | R$%,.2f |";
     public static int contador = 0;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         List<FundoImobiliario> listaDeFundos = new ArrayList<>(WebCrawlerUtil.parseListaDeFundos());
 
         Map<String, FundoImobiliario> mapFundos = listaDeFundos.stream()
                 .collect(Collectors.toMap(FundoImobiliario::codigo,
-                          Function.identity(),
+                            Function.identity(),
                         (existing, replacement) -> existing));
 
         FileUtil.deleteOldFile();
